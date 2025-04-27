@@ -1,10 +1,12 @@
 package virtualMarket.items;
 
 import java.time.LocalDateTime;
-
+import virtualMarket.enums.*;
 public class ElectronicItem extends Item {
 
 	private int warrantyPeriod;
+	private ElectronicsType type;
+	private ElectronicsBrand brand;
 	private LocalDateTime warrantyStart;
 	private LocalDateTime warrantyEnd;
 	
