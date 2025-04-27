@@ -1,5 +1,8 @@
 package virtualMarket.items;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import virtualMarket.enums.*;
 
 public class ClothingItem extends Item{
@@ -9,9 +12,9 @@ public class ClothingItem extends Item{
 
 		
 
-		public ClothingItem(int id, String name, double price, int amount, ClothingType type, ClothingSize size,
+		public ClothingItem(String name, double price, int amount, ClothingType type, ClothingSize size,
 				ClothingFabricType fabric) {
-			super(id, name, price, amount);
+			super(name, price, amount);
 			this.type = type;
 			this.size = size;
 			this.fabric = fabric;
@@ -35,6 +38,27 @@ public class ClothingItem extends Item{
 			return fabric;
 		}
 
+		@Override
+	    public String generateID(ArrayList<String> usedIDs) {
+	        Random random = new Random();
+	        String id;
+	        
+	        do {
+	            int firstDigit = random.nextInt(3) + ItemType.CLOTHING.getIDStart();
+	            
+	            int remainingDigits = random.nextInt(1000);
+	            
+	            id = String.format("%d%03d", firstDigit, remainingDigits);
+	            
+	        } while (usedIDs.contains(id));
+	        usedIDs.add(id);
+	        return id;
+	    }
+		
+		@Override
+		public void calculateTaxedPrice() {
+			this.price = price * TaxByType.GROCERY.getKdv();	
+		}
 
 
 		@Override

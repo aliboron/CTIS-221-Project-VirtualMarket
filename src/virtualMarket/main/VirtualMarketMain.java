@@ -1,6 +1,10 @@
 package virtualMarket.main;
 
+import java.io.IOException;
+
 import javax.swing.UIManager;
+
+import virtualMarket.inventory.InventorySystem;
 import virtualMarket.ui.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -8,7 +12,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 public class VirtualMarketMain{
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
 		/*
@@ -24,6 +28,7 @@ public class VirtualMarketMain{
 		 * BU ARALIĞA DOKUNMAYIN
 		 */
         
+		InventorySystem.loadUsedIDs();
         VMarketMainFrame VMMwindow = new VMarketMainFrame();
         VMMwindow.setVisible(true);
 	}

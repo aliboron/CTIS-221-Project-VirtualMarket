@@ -20,6 +20,26 @@ public class Supplier {
 		
 	}
 	
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public String getContactInfo() {
+		return contactInfo;
+	}
+
+
+
 	public ArrayList<Item> getSuppliedItems()
 	{
 		

@@ -16,6 +16,7 @@ public class Customer {
 	}
 
 	public void placeOrder(Order order) {
+		
 	};
 
 	public ArrayList<Order> getOrderHistory() {
