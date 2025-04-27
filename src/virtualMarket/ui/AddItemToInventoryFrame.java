@@ -131,6 +131,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AddItemToInventoryFrame extends JFrame {
 
@@ -146,7 +148,7 @@ public class AddItemToInventoryFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddItemToInventoryFrame() {
+	public AddItemToInventoryFrame(MarketAdminPanelFrame mapf) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
@@ -294,5 +296,15 @@ public class AddItemToInventoryFrame extends JFrame {
 		JButton btnAddItem = new JButton("Add Item");
 		btnAddItem.setBounds(10, 497, 89, 23);
 		contentPane.add(btnAddItem);
+		
+		JButton btnGoBack = new JButton("<--");
+		btnGoBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mapf.setVisible(true);
+				dispose();
+			}
+		});
+		btnGoBack.setBounds(6, 627, 89, 23);
+		contentPane.add(btnGoBack);
 	}
 }

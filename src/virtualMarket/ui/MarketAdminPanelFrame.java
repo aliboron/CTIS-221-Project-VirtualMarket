@@ -17,6 +17,7 @@ public class MarketAdminPanelFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	private AddItemToInventoryFrame aitiFrame = new AddItemToInventoryFrame(this);
 
 
 	/**
@@ -100,6 +101,13 @@ public class MarketAdminPanelFrame extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnAddItemtoInventory = new JButton("Add Item to Inventory");
+		btnAddItemtoInventory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aitiFrame.setVisible(true);
+				dispose();
+				
+			}
+		});
 		btnAddItemtoInventory.setBounds(406, 48, 191, 23);
 		contentPane.add(btnAddItemtoInventory);
 		
