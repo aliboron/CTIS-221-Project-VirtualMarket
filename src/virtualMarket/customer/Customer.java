@@ -15,11 +15,11 @@ public class Customer {
 		this.address = address;
 	}
 
-	public void placeOrder(Order order) {
+	public void placeOrder(Order order) { //Need to implement order
 		
 	};
 
-	public ArrayList<Order> getOrderHistory() {
+	public ArrayList<Order> getOrderHistory() { //Waiting for file operations before implemented
 		return null;
 	};
 
