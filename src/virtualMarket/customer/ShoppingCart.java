@@ -14,13 +14,15 @@ public class ShoppingCart {
 	};
 
 	public void addItem(Item item) {
+		
 	};
 
 	public void removeItem(Item item) {
+		
 	};
 
 	public Order checkOut() {
-		return null;
+		return null;
 	};
 
 }

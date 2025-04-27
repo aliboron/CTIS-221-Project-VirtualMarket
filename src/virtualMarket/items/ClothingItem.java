@@ -1,26 +1,41 @@
 package virtualMarket.items;
 
+import virtualMarket.enums.*;
+
 public class ClothingItem extends Item{
-		private String fabric, size, type;
+		private ClothingType type;
+		private ClothingSize size;
+		private ClothingFabricType fabric;
 
-		public ClothingItem(int id, String name, double price, int amount, String fabric, String size, String type) {
+		
+
+		public ClothingItem(int id, String name, double price, int amount, ClothingType type, ClothingSize size,
+				ClothingFabricType fabric) {
 			super(id, name, price, amount);
-			this.fabric = fabric;
-			this.size = size;
 			this.type = type;
+			this.size = size;
+			this.fabric = fabric;
+		}
+		
+		
+
+		public ClothingType getType() {
+			return type;
 		}
 
-		public String getFabric() {
-			return fabric;
-		}
 
-		public String getSize() {
+
+		public ClothingSize getSize() {
 			return size;
 		}
 
-		public String getType() {
-			return type;
+
+
+		public ClothingFabricType getFabric() {
+			return fabric;
 		}
+
+
 
 		@Override
 		public Item purchaseItem() {
