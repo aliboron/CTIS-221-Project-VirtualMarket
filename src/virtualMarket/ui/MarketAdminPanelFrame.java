@@ -99,5 +99,9 @@ public class MarketAdminPanelFrame extends JFrame {
 		table.getColumnModel().getColumn(2).setMinWidth(30);
 		scrollPane.setViewportView(table);
 		
+		JButton btnAddItemtoInventory = new JButton("Add Item to Inventory");
+		btnAddItemtoInventory.setBounds(406, 48, 191, 23);
+		contentPane.add(btnAddItemtoInventory);
+		
 	}
 }
