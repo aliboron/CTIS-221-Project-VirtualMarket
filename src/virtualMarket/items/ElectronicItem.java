@@ -23,6 +23,8 @@ public class ElectronicItem extends Item {
 		this.brand = brand;
 	}
 	
+
+	
 	@Override
     public String generateID(ArrayList<String> usedIDs) {
         Random random = new Random();
@@ -37,9 +39,24 @@ public class ElectronicItem extends Item {
             
         } while (usedIDs.contains(id));
         usedIDs.add(id);
+        this.id = id;
         return id;
     }
 	
+	
+	
+	public ElectronicsType getType() {
+		return type;
+	}
+
+
+
+	public ElectronicsBrand getBrand() {
+		return brand;
+	}
+
+
+
 	@Override
 	public void calculateTaxedPrice() {
 		this.price = price * TaxByType.ELECTRONICS.getKdv();	

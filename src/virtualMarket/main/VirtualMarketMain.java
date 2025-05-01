@@ -27,7 +27,7 @@ public class VirtualMarketMain{
 		/*
 		 * BU ARALIĞA DOKUNMAYIN
 		 */
-        
+        InventorySystem.loadInventoryFromFile();
 		InventorySystem.loadUsedIDs();
         VMarketMainFrame VMMwindow = new VMarketMainFrame();
         VMMwindow.setVisible(true);

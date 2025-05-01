@@ -29,6 +29,7 @@ public class GroceryItem extends Item{
             
         } while (usedIDs.contains(id));
         usedIDs.add(id);
+        this.id = id;
         return id;
     }
 
@@ -37,6 +38,9 @@ public class GroceryItem extends Item{
 		this.price = price * TaxByType.CLOTHING.getKdv();	
 	}
 
+	public GroceryType getGroceryType (){
+		return type;
+	}
 
 	@Override
 	public Item purchaseItem() {

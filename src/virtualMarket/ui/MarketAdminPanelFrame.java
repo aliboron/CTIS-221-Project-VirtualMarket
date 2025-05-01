@@ -52,7 +52,7 @@ public class MarketAdminPanelFrame extends JFrame {
 		contentPane.add(scrollPane);
 		
 		inventoryTable = new JTable();
-		updateInventoryTable(InventorySystem.itemList);
+		updateInventoryTable(InventorySystem.inventory);
 		scrollPane.setViewportView(inventoryTable);
 		
 		JButton btnAddItemtoInventory = new JButton("Add Item to Inventory");

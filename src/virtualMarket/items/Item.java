@@ -34,6 +34,10 @@ public abstract class Item implements DiscountableInterface {
 		return amount;
 	}
 	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	public abstract String generateID(ArrayList<String> UsedIDs);
 	
 	
@@ -47,6 +51,6 @@ public abstract class Item implements DiscountableInterface {
 	public abstract void calculateTaxedPrice();
 
     public String toString() {
-        return String.format("[%d] %s | %.2f ₺ | stock: %d test", id, name, price, amount);
+        return String.format("[%s] %s | %.2f ₺ | stock: %d test", id, name, price, amount);
     }
 }

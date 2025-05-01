@@ -52,6 +52,7 @@ public class ClothingItem extends Item{
 	            
 	        } while (usedIDs.contains(id));
 	        usedIDs.add(id);
+	        this.id = new String(id);
 	        return id;
 	    }
 		

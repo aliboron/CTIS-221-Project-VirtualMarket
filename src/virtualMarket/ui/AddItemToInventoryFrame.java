@@ -18,6 +18,7 @@ import javax.swing.border.EtchedBorder;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -241,13 +242,20 @@ public class AddItemToInventoryFrame extends JFrame {
 					
 					item = new GroceryItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), ldt, (GroceryType) cbGroceryType.getSelectedItem());
 
-				} else if (cbItemType.getSelectedItem() == ItemType.GROCERY) {
+				} else if (cbItemType.getSelectedItem() == ItemType.CLOTHING) {
 					item = new ClothingItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), (ClothingType) cbClothingType.getSelectedItem(), (ClothingSize) cbClothingSize.getSelectedItem(), (ClothingFabricType) cbClothingFabric.getSelectedItem());
 				} else {
 					item = new ElectronicItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), Integer.parseInt(tfWarrantyPeriod.getText()), (ElectronicsType) cbElectronicsType.getSelectedItem(), (ElectronicsBrand) cbElectronicsBrand.getSelectedItem());
 				}
-				
+				item.generateID(InventorySystem.usedIds);
 				InventorySystem.addItem(item);
+				JOptionPane.showMessageDialog(thisFrame, InventorySystem.inventory.toString());
+				try {
+					InventorySystem.writeInventoryToFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
