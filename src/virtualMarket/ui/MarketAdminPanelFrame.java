@@ -86,7 +86,7 @@ public class MarketAdminPanelFrame extends JFrame {
 	        Object[] rowData = new Object[3];
 	        rowData[0] = item.getId();
 	        rowData[1] = item.getName();
-	        rowData[2] = item.getAmount(); // Assuming Item has getStock() method
+	        rowData[2] = item.getStock(); // Assuming Item has getStock() method
 	        
 	        tableModel.addRow(rowData);
 	    }

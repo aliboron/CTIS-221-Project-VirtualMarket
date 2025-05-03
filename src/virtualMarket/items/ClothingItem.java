@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import virtualMarket.enums.*;
+import virtualMarket.inventory.InventorySystem;
 
 public class ClothingItem extends Item{
 		private ClothingType type;
@@ -12,9 +13,9 @@ public class ClothingItem extends Item{
 
 		
 
-		public ClothingItem(String name, double price, int amount, ClothingType type, ClothingSize size,
+		public ClothingItem(String name, double price, int stock, ClothingType type, ClothingSize size,
 				ClothingFabricType fabric) {
-			super(name, price, amount);
+			super(name, price, stock);
 			this.type = type;
 			this.size = size;
 			this.fabric = fabric;
@@ -51,7 +52,6 @@ public class ClothingItem extends Item{
 	            id = String.format("%d%03d", firstDigit, remainingDigits);
 	            
 	        } while (usedIDs.contains(id));
-	        usedIDs.add(id);
 	        this.id = new String(id);
 	        return id;
 	    }
@@ -66,6 +66,21 @@ public class ClothingItem extends Item{
 		public Item purchaseItem() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+
+
+		@Override
+		public String toFileString() {
+			return String.format("%s,%s,%s,%f,%d,%s,%s,%s\n", 
+					"clo",
+					getId(),
+					getName(), 
+					getPrice(), 
+					getStock(), 
+					getType().name(), 
+					getSize().name(), 
+					getFabric().name());
 		}
 		
 		

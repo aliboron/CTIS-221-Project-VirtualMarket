@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import virtualMarket.enums.*;
+import virtualMarket.inventory.InventorySystem;
 public class ElectronicItem extends Item {
 
 	private int warrantyPeriod;
@@ -15,9 +16,9 @@ public class ElectronicItem extends Item {
 	
 	
 	
-	public ElectronicItem(String name, double price, int amount, int warrantyPeriod,
+	public ElectronicItem(String name, double price, int stock, int warrantyPeriod,
 			ElectronicsType type, ElectronicsBrand brand) {
-		super(name, price, amount);
+		super(name, price, stock);
 		this.warrantyPeriod = warrantyPeriod;
 		this.type = type;
 		this.brand = brand;
@@ -38,7 +39,6 @@ public class ElectronicItem extends Item {
             id = String.format("%d%03d", firstDigit, remainingDigits);
             
         } while (usedIDs.contains(id));
-        usedIDs.add(id);
         this.id = id;
         return id;
     }
@@ -65,13 +65,27 @@ public class ElectronicItem extends Item {
 	
 	@Override
 	public Item purchaseItem() {
-		if (this.amount <= 0)
+		if (this.stock <= 0)
 			return null;
-		this.amount--;
+		this.stock--;
 		warrantyStart = LocalDateTime.now();
 		warrantyEnd = warrantyStart.plusYears(warrantyPeriod);
 		
 		return this;
+	}
+
+
+
+	@Override
+	public String toFileString() {
+		return String.format("%s,%s,%s,%f,%d,%s,%s\n", 
+				"elc",
+				getId(),
+				getName(), 
+				getPrice(), 
+				getStock(), 
+				getType().name(), 
+				getBrand().name());
 	}
 
 }

@@ -1,6 +1,6 @@
 package virtualMarket.ui;
 
-import java.awt.EventQueue;
+import java.awt.Component;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,18 +9,13 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 
-import virtualMarket.authentication.*;
-import virtualMarket.items.*;
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultListModel;
+
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+
 
 
 
@@ -40,6 +35,9 @@ public class CustomerPanelFrame extends JFrame {
 	
     private JButton btnReduceItemByOne;
     private JButton btnRemoveItem;
+    private JScrollPane scrollPane_1;
+    private JList listMarketItems;
+    private JList listShoppingCart;
     
 	/**
 	 * Create the frame.
@@ -48,7 +46,7 @@ public class CustomerPanelFrame extends JFrame {
 	public CustomerPanelFrame(VMarketMainFrame vmmf) {
 		CustomerPanelFrame frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 400);
+		setBounds(100, 100, 600, 550);
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -56,7 +54,7 @@ public class CustomerPanelFrame extends JFrame {
 		contentPanel.setLayout(null);
 		
 		btnGoBack = new JButton("<--");
-		btnGoBack.setBounds(10, 10, 89, 23);
+		btnGoBack.setBounds(10, 477, 89, 23);
 		contentPanel.add(btnGoBack);
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -66,7 +64,7 @@ public class CustomerPanelFrame extends JFrame {
 		});
 		
 		ShoppingPanel = new JPanel();
-		ShoppingPanel.setBounds(0, 0, 584, 361);
+		ShoppingPanel.setBounds(0, 80, 584, 361);
 		contentPanel.add(ShoppingPanel);
 		ShoppingPanel.setLayout(null);
 		
@@ -90,33 +88,67 @@ public class CustomerPanelFrame extends JFrame {
 		lblYourCart.setBounds(360, 57, 72, 14);
 		ShoppingPanel.add(lblYourCart);
 		
-		JList listMarketItems = new JList();
-		listMarketItems.setBounds(10, 82, 230, 268);
-		ShoppingPanel.add(listMarketItems);
-		
 		JLabel lblItemList = new JLabel("Item List:");
 		lblItemList.setBounds(10, 57, 72, 14);
 		ShoppingPanel.add(lblItemList);
 		
 		btnAddToCart = new JButton("Add to Cart");
-		btnAddToCart.setBounds(250, 99, 100, 23);
+		btnAddToCart.setBounds(245, 99, 100, 23);
 		ShoppingPanel.add(btnAddToCart);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(360, 82, 214, 268);
+		scrollPane.setBounds(360, 80, 215, 270);
 		ShoppingPanel.add(scrollPane);
 		
-		JList listShoppingCart = new JList();
+		listShoppingCart = new JList();
 		scrollPane.setViewportView(listShoppingCart);
 		
 		btnReduceItemByOne = new JButton("Reduce One");
-		btnReduceItemByOne.setBounds(250, 133, 100, 23);
+		btnReduceItemByOne.setBounds(245, 133, 100, 23);
 		ShoppingPanel.add(btnReduceItemByOne);
 		
 		btnRemoveItem = new JButton("Remove Item");
-		btnRemoveItem.setBounds(250, 166, 100, 23);
+		btnRemoveItem.setBounds(245, 166, 100, 23);
 		ShoppingPanel.add(btnRemoveItem);
 		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 80, 215, 270);
+		ShoppingPanel.add(scrollPane_1);
 		
+		listMarketItems = new JList();
+		scrollPane_1.setViewportView(listMarketItems);
+		
+		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.setBounds(245, 200, 100, 23);
+		ShoppingPanel.add(btnCheckout);
+		
+		JComboBox cbCustomers = new JComboBox();
+		cbCustomers.setBounds(130, 11, 170, 22);
+		contentPanel.add(cbCustomers);
+		
+		JLabel lblSelectCustomer = new JLabel("Select Customer:");
+		lblSelectCustomer.setBounds(10, 15, 110, 14);
+		contentPanel.add(lblSelectCustomer);
+		
+		JButton btnSelectCustomer = new JButton("Select");
+		btnSelectCustomer.setBounds(310, 11, 89, 23);
+		contentPanel.add(btnSelectCustomer);
+		
+		disableShoppingPanel();
+		
+	}
+	public JList getListMarketItems() {
+		return listMarketItems;
+	}
+
+	private void disableShoppingPanel() {
+		
+		// OR Option 2: Disable all components individually
+		Component[] components = ShoppingPanel.getComponents();
+		for (Component component : components) {
+			component.setEnabled(false);
+		}
+		listMarketItems.setEnabled(false);
+		listShoppingCart.setEnabled(false);
 	}
 }

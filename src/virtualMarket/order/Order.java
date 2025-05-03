@@ -13,7 +13,6 @@ public class Order {
 	private ArrayList<Item> itemList = new ArrayList<>();
 	private double totalAmount = 0;
 	private LocalDateTime orderDate;
-	private OrderStateTypes state;
 
 	public Order(int id, Customer customer, ArrayList<Item> itemList, LocalDateTime orderDate) {
 		super();
@@ -21,7 +20,7 @@ public class Order {
 		this.customer = customer;
 		this.itemList = itemList;
 		this.orderDate = orderDate;
-		this.state = OrderStateTypes.IN_PROGRESS;
+		this.totalAmount = calculateTotal();
 	}
 
 	public double calculateTotal() {
@@ -29,7 +28,7 @@ public class Order {
 		double totalPrice = 0;
 
 		for (Item i : itemList) {
-			totalPrice += i.getAmount() * i.getPrice();
+			totalPrice += i.getStock() * i.getPrice();
 
 		}
 

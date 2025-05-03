@@ -22,5 +22,11 @@ public class Customer {
 	public ArrayList<Order> getOrderHistory() { //Waiting for file operations before implemented
 		return null;
 	};
+	
+	
+	public String toFileString() {
+		return String.format(""
+	}
+
 
 }

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import virtualMarket.enums.*;
+import virtualMarket.inventory.InventorySystem;
 
 public class GroceryItem extends Item{
 	private LocalDateTime expiryDate;
 	private GroceryType type;
 	
-    public GroceryItem(String name, double price, int amount, LocalDateTime expiryDate, GroceryType type) {
-    	super(name, price, amount);
+    public GroceryItem(String name, double price, int stock, LocalDateTime expiryDate, GroceryType type) {
+    	super(name, price, stock);
     	this.expiryDate = expiryDate;
     	this.type = type;
     }
@@ -28,7 +29,6 @@ public class GroceryItem extends Item{
             id = String.format("%d%03d", firstDigit, remainingDigits);
             
         } while (usedIDs.contains(id));
-        usedIDs.add(id);
         this.id = id;
         return id;
     }
@@ -50,6 +50,17 @@ public class GroceryItem extends Item{
 
 	public LocalDateTime getExpiryDate() {
 		return expiryDate;
+	}
+	
+	public String toFileString() {
+		return String.format("%s,%s,%s,%f,%d,%s,%s\n", 
+				"grc", 
+				getId(),
+				getName(), 
+				getPrice(), 
+				getStock(), 
+				getExpiryDate().toString(), 
+				getGroceryType().name());
 	}
     
 }

@@ -8,6 +8,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
+
+import virtualMarket.inventory.InventorySystem;
+import virtualMarket.items.Item;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -16,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.AbstractListModel;
@@ -38,8 +43,6 @@ public class VMarketMainFrame extends JFrame {
 	
 	CustomerPanelFrame cpf = new CustomerPanelFrame(this);
 	MarketAdminPanelFrame mapf = new MarketAdminPanelFrame(this);
-	private JTextField tfEmail;
-	private JTextField textField;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	
@@ -66,24 +69,6 @@ public class VMarketMainFrame extends JFrame {
 		marketIcon.setIcon(new ImageIcon(VMarketMainFrame.class.getResource("/images/Adsız.png")));
 		marketIcon.setBounds(267, 36, 296, 281);
 		contentPane.add(marketIcon);
-		
-		tfEmail = new JTextField();
-		tfEmail.setBounds(135, 409, 246, 20);
-		contentPane.add(tfEmail);
-		tfEmail.setColumns(10);
-		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setBounds(63, 412, 96, 14);
-		contentPane.add(lblEmail);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(135, 440, 246, 20);
-		contentPane.add(textField);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(63, 443, 96, 14);
-		contentPane.add(lblPassword);
 		
 		JRadioButton rdCustomer = new JRadioButton("Customer");
 		rdCustomer.addActionListener(new ActionListener() {
@@ -112,6 +97,7 @@ public class VMarketMainFrame extends JFrame {
 				//JOptionPane.showMessageDialog(thisFrame, "Is admin? : " + isAdmin);
 				
 				if (!isAdmin) {
+					fillCustomerFrameItemList();
 					cpf.setVisible(true);
 					dispose();
 				}else {
@@ -120,5 +106,13 @@ public class VMarketMainFrame extends JFrame {
 				}
 			}
 		});
+		
+
+	}
+	
+	public void fillCustomerFrameItemList() {
+		DefaultListModel<Item> listModel = new DefaultListModel<>();
+		listModel.addAll(InventorySystem.inventory);
+		cpf.getListMarketItems().setModel(listModel);
 	}
 }

@@ -230,7 +230,7 @@ public class AddItemToInventoryFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (InventorySystem.searchItemByName(tfItemName.getText())) {
-					int reply = JOptionPane.showConfirmDialog(thisFrame, "There is already an item with the same name! You should use increase stock in the previous window. Do you want to continue?", "Duplicate Name Warning", JOptionPane.YES_NO_OPTION);
+					int reply = JOptionPane.showConfirmDialog(thisFrame, "There is already an item with the same name! You could increase the stock in the previous window. Do you want to continue?", "Duplicate Name Warning", JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.NO_OPTION)
 						return;
 				}
@@ -247,13 +247,15 @@ public class AddItemToInventoryFrame extends JFrame {
 				} else {
 					item = new ElectronicItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), Integer.parseInt(tfWarrantyPeriod.getText()), (ElectronicsType) cbElectronicsType.getSelectedItem(), (ElectronicsBrand) cbElectronicsBrand.getSelectedItem());
 				}
-				item.generateID(InventorySystem.usedIds);
+				if (InventorySystem.addUsedIDAndWrite(item.generateID(InventorySystem.usedIds)))
+					JOptionPane.showMessageDialog(thisFrame, "Generated id written to file successfuly!");
+				else
+					JOptionPane.showMessageDialog(thisFrame, "Unsuccessful id operation");
 				InventorySystem.addItem(item);
 				JOptionPane.showMessageDialog(thisFrame, InventorySystem.inventory.toString());
 				try {
 					InventorySystem.writeInventoryToFile();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

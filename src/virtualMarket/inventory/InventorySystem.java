@@ -1,20 +1,11 @@
 package virtualMarket.inventory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.lang.reflect.Type;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.io.FileReader;
-import java.io.Reader;
-import java.util.Arrays;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import java.util.Scanner;
 
 import virtualMarket.items.*;
 
@@ -28,56 +19,6 @@ public class InventorySystem {
 	public static boolean addItem(Item item) {
 		return inventory.add(item);
 	};
-	
-	public static boolean writeInventoryToFile() throws IOException {
-		File inventoryFile = new File("src/data/inventory.csv");
-		
-		// Create parent directories if they don't exist
-		inventoryFile.getParentFile().mkdirs();
-		
-		// Use try-with-resources to ensure the writer is closed
-		try (PrintWriter inventoryWriter = new PrintWriter(new FileWriter(inventoryFile, false))) { // false = overwrite
-			
-			for (Item item : inventory) {
-				if(item instanceof GroceryItem) {
-					inventoryWriter.printf("%s,%s,%s,%f,%d,%s,%s\n", 
-						"grc", 
-						item.getId(),
-						item.getName(), 
-						item.getPrice(), 
-						item.getAmount(), 
-						((GroceryItem) item).getExpiryDate().toString(), 
-						((GroceryItem) item).getGroceryType().name());
-				} else if (item instanceof ElectronicItem) {
-					inventoryWriter.printf("%s,%s,%s,%f,%d,%s,%s\n", 
-						"elc", // Fixed identifier
-						item.getId(),
-						item.getName(), 
-						item.getPrice(), 
-						item.getAmount(), 
-						((ElectronicItem) item).getType().name(), 
-						((ElectronicItem) item).getBrand().name());
-				} else {
-					inventoryWriter.printf("%s,%s,%s,%f,%d,%s,%s,%s\n", 
-						"clo", // Changed to a clothing identifier
-						item.getId(),
-						item.getName(), 
-						item.getPrice(), 
-						item.getAmount(), 
-						((ClothingItem) item).getType().name(), 
-						((ClothingItem) item).getSize().name(), 
-						((ClothingItem) item).getFabric().name());
-				}
-			}
-			
-			// Ensure data is written
-			inventoryWriter.flush();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
 	public static String displayItems() {
 
@@ -124,7 +65,7 @@ public class InventorySystem {
 	public static double calculateInventoryValue() {
 		double totalInventory = 0;
 		for (Item item : inventory) {
-			totalInventory += item.getAmount() * item.getPrice();
+			totalInventory += item.getStock() * item.getPrice();
 		}
 		return totalInventory;
 	};
@@ -138,7 +79,7 @@ public class InventorySystem {
 	        return false;
 	    }
 	    
-	    try (java.util.Scanner scanner = new java.util.Scanner(inventoryFile)) {
+	    try (Scanner scanner = new Scanner(inventoryFile)) {
 	        // Clear existing inventory
 	        inventory.clear();
 	        
@@ -231,32 +172,75 @@ public class InventorySystem {
 	    }
 	}
 	
+	public static boolean writeInventoryToFile() throws IOException {
+		File inventoryFile = new File("src/data/inventory.csv");
+		
+		if (!inventoryFile.exists())
+			inventoryFile.getParentFile().mkdirs();
+		
+
+		try (PrintWriter inventoryWriter = new PrintWriter(new FileWriter(inventoryFile, false))) { // false = overwrite
+			
+			for (Item item : inventory) {
+				inventoryWriter.print(item.toFileString());
+			}
+			
+			inventoryWriter.flush();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public static boolean loadUsedIDs() throws IOException {
-		File file = new File("src/data/usedidset.json");
+		File file = new File("src/data/usedidsetItems.csv");
 
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
 			try (FileWriter writer = new FileWriter(file)) {
-				writer.write("[]");
+				writer.write("");
 			}
 			return true;
 		}
 
-		try (Reader reader = new FileReader(file)) {
-
-			Gson gson = new Gson();
-
-			String[] loadedIds = gson.fromJson(reader, String[].class);
-
-			usedIds.clear();
-			if (loadedIds != null) {
-				usedIds.addAll(Arrays.asList(loadedIds));
+		try (Scanner scan = new Scanner(file)) {
+			while(scan.hasNext()) {
+				String current = scan.nextLine().trim();
+				usedIds.add(current);
 			}
 			return true;
-		} catch (JsonSyntaxException e) {
-			System.err.println("Error parsing JSON file: " + e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
 			return false;
 		}
+	}
+	
+	public static boolean addUsedIDAndWrite(String id) {
+		File file = new File("src/data/usedidsetItems.csv");
+		if (!Item.isValidItemID(id)) {
+			System.out.println("Wrong id format!");
+			return false;
+		}
+		
+		for (String str : usedIds) {
+			if (str.equalsIgnoreCase(id))
+				return false;
+		}
+		
+		usedIds.add(id);
+		
+		try {
+			PrintWriter pw = new PrintWriter(new FileWriter(file, true));
+			pw.printf("%s\n", id);
+			pw.flush();
+			pw.close();
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		return true;
+			
 	}
 
 }
