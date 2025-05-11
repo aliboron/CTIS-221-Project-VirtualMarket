@@ -6,6 +6,7 @@ import virtualMarket.order.*;
 public class Customer {
 	private int id;
 	private String name, email, address;
+	private ShoppingCart shoppingCart = new ShoppingCart(this);; // her musterinin bir alisveris sepeti var
 
 	public Customer(int id, String name, String email, String address) {
 		super();
@@ -15,13 +16,14 @@ public class Customer {
 		this.address = address;
 	}
 
-	public ArrayList<Order> getOrderHistory() { //Waiting for file operations before implemented
-		return null;
+	public ArrayList<Order> getOrderHistory() { 
+		System.out.println("getOrderHistory method is not fully implemented yet.");
+		return null; // Simdilik null donduruyor
 	};
 	
 	
 	public String toFileString() {
-		return String.format("%d,%s,%s,%s\n", id, name, email, address);
+		return String.format("%d;%s;%s;%s\n", id, name, email, address);
 	}
 
 	public int getId() {
@@ -49,4 +51,8 @@ public class Customer {
 		return String.format("ID: %d\nName: %s\nEmail: %s\nAddress: %s\n", id, name, email, address);
 	}
 
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+	
 }

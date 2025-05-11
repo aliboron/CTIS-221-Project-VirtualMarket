@@ -79,16 +79,30 @@ public class ManageCustomerFrame extends JFrame {
 		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
 
-		JButton btnNewButton = new JButton("ADD");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		JButton btnAdd = new JButton("ADD");
+		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+	                if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfAddress.getText().isEmpty()) {
+	                    textArea.setText("Please fill in all fields!");
+	                    return;
+	                }
 
-				CustomerSys.addCustomer(tfName.getText(), tfEmail.getText(), tfAddress.getText());
-			}
-		});
-		btnNewButton.setBounds(190, 125, 89, 23);
-		contentPane.add(btnNewButton);
+	                if (CustomerSys.findName(tfName.getText())) {
+	                    textArea.setText("Customer '" +tfName.getText() + "' already exists!");
+	                } else {
+	                    if (CustomerSys.addCustomer(tfName.getText(),tfEmail.getText(),  tfAddress.getText())) {
+	                        textArea.setText("Customer '" + tfName.getText()+ "' successfully added.");
+	                    } else {
+	                        textArea.setText("Failed to add customer '" + tfName.getText() + "'. Please try again.");
+	                    }
+	                }
+	            }
+	        });
+
+		btnAdd.setBounds(190, 125, 89, 23);
+		contentPane.add(btnAdd);
 
 		JButton btnDisplay = new JButton("DISPLAY");
 		btnDisplay.addMouseListener(new MouseAdapter() {
@@ -114,6 +128,7 @@ public class ManageCustomerFrame extends JFrame {
 				
 			}
 		});
+
 		btnRemove.setBounds(190, 236, 90, 23);
 		contentPane.add(btnRemove);
 
@@ -137,8 +152,18 @@ public class ManageCustomerFrame extends JFrame {
 		btnGoBack.setBounds(10, 517, 90, 23);
 		contentPane.add(btnGoBack);
 		
-		JButton btnNewButton_1 = new JButton("CLEAR");
-		btnNewButton_1.setBounds(191, 159, 89, 23);
-		contentPane.add(btnNewButton_1);
+		JButton btnClear = new JButton("CLEAR");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfName.setText("");
+				tfEmail.setText("");
+				tfAddress.setText("");
+				textField.setText("");
+				textArea.setText("");
+			}
+		});
+
+		btnClear.setBounds(191, 159, 89, 23);
+		contentPane.add(btnClear);
 	}
 }

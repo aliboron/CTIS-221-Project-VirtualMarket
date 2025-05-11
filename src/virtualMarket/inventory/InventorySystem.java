@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import virtualMarket.enums.*;
@@ -83,10 +84,11 @@ public class InventorySystem {
 		try (Scanner scanner = new Scanner(inventoryFile)) {
 			// Clear existing inventory
 			inventory.clear();
-
+			
 			while (scanner.hasNextLine()) {
+				scanner.useLocale(Locale.GERMAN);
 				String line = scanner.nextLine();
-				String[] parts = line.split(",");
+				String[] parts = line.split(";");
 
 				// Check if there are enough parts in the line
 				if (parts.length < 5) {
@@ -100,7 +102,7 @@ public class InventorySystem {
 				// Common properties for all items
 				String id = parts[1]; // ID is now at index 1
 				String name = parts[2]; // Name is now at index 2
-				double price = Double.parseDouble(parts[3]);
+				double price = Double.parseDouble(parts[3].replace(",", "."));
 				int amount = Integer.parseInt(parts[4]);
 
 				Item item = null;

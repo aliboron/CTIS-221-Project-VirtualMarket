@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,17 +13,20 @@ public class CustomerSys {
 	public static ArrayList<Customer> customers = new ArrayList<>();
 	static ArrayList<Integer> usedIDs = new ArrayList<>();
 
-	public static void addCustomer(String name, String email, String address){
+	public static boolean addCustomer(String name, String email, String address){
 		int newId = generateCustomerID();
 		Customer customer = new Customer(newId, name, email, address);
-		customers.add(customer);
-		try {
-			writeCustomersToFile();
-		} catch (IOException e) {
-			System.out.println("Error writing customers file after adding: " + e.getMessage());
-			e.printStackTrace();
-		}
+		if (customers.add(customer)) {
+			try {
+				writeCustomersToFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return true;
+		}else 
+			return false;
 	};
+
 
 	public static boolean removeCustomer(int id){
 		boolean removed = customers.removeIf(customer -> customer.getId() == id);
@@ -44,6 +48,19 @@ public class CustomerSys {
 		
 		return id;
 	}
+
+	 public static boolean findName(String name) {
+	        if (name == null || name.trim().isEmpty()) {
+	            return false;
+	        }
+	        for (Customer customer : customers) {
+	            
+	            if (customer.getName() != null && customer.getName().equals(name)) {
+	                return true; 
+	            }
+	        }
+	        return false; 
+	    }
 
 
 	public static boolean loadCustomersFromFile() {
@@ -69,8 +86,9 @@ public class CustomerSys {
 			customers.clear();
 			
 			while (scanner.hasNextLine()) {
+				scanner.useLocale(Locale.GERMAN);
 				String line = scanner.nextLine();
-				String[] parts = line.split(",");
+				String[] parts = line.split(";");
 				
 				if (parts.length < 4) {
 					System.err.println("Invalid customer line format: " + line);
