@@ -256,8 +256,11 @@ public class ManageInventoryFrame extends JFrame {
 					JOptionPane.showMessageDialog(thisFrame, "Generated id written to file successfuly!");
 				else
 					JOptionPane.showMessageDialog(thisFrame, "Unsuccessful id operation");
-				InventorySystem.addItem(item);
-				JOptionPane.showMessageDialog(thisFrame, InventorySystem.inventory.toString());
+				
+				if(InventorySystem.addItem(item))
+					taFeedback.setText("New item added succesfully!\n"+item.toString());
+				else
+					taFeedback.setText("Failed to add new item!");
 				try {
 					InventorySystem.writeInventoryToFile();
 				} catch (IOException e1) {
