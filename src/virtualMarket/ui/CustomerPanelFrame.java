@@ -43,6 +43,7 @@ public class CustomerPanelFrame extends JFrame {
     private JList listMarketItems;
     private JList listShoppingCart;
     private JComboBox cbCustomers= new JComboBox();
+    ManageCustomerFrame mcf = new ManageCustomerFrame(this);
     
 	/**
 	 * Create the frame.
@@ -137,6 +138,16 @@ public class CustomerPanelFrame extends JFrame {
 		JButton btnSelectCustomer = new JButton("Select");
 		btnSelectCustomer.setBounds(310, 11, 89, 23);
 		contentPanel.add(btnSelectCustomer);
+		
+		JButton btnNewButton = new JButton("Add Customer");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mcf.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton.setBounds(410, 11, 121, 23);
+		contentPanel.add(btnNewButton);
 		
 		disableShoppingPanel();
 		
