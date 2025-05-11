@@ -44,6 +44,9 @@ public class Customer {
 	public String toString() {
 		return name;
 	}
-
+	
+	public String displayInfo() {
+		return String.format("ID: %d\nName: %s\nEmail: %s\nAddress: %s\n", id, name, email, address);
+	}
 
 }

@@ -16,25 +16,22 @@ public class CustomerSys {
 		int newId = generateCustomerID();
 		Customer customer = new Customer(newId, name, email, address);
 		customers.add(customer);
-		addUsedCustomerIDAndWrite(newId); 
 		try {
 			writeCustomersToFile();
 		} catch (IOException e) {
-			System.err.println("Error writing customers file after adding: " + e.getMessage());
+			System.out.println("Error writing customers file after adding: " + e.getMessage());
 			e.printStackTrace();
 		}
 	};
 
-	public static void removeCustomer(int id){
-		boolean removed = customers.removeIf(customer -> customer.getId() == id); 
+	public static boolean removeCustomer(int id){
+		boolean removed = customers.removeIf(customer -> customer.getId() == id);
 		if (removed) {
-			try {
-				writeCustomersToFile();
-			} catch (IOException e) {
-				System.err.println("Error writing customers file after removing: " + e.getMessage());
-				e.printStackTrace();
-			}
+			for (Integer i : usedIDs)
+				if (i == id)
+					usedIDs.remove(i);
 		}
+		return removed;
 	};
 	
 	public static int generateCustomerID() {
@@ -96,7 +93,6 @@ public class CustomerSys {
 					System.err.println("Invalid customer ID format in line: " + line);
 				}
 			}
-			System.out.println(customers.toString());
 			return true;
 		} catch (IOException e) {
 			System.err.println("Error loading customers: " + e.getMessage());
@@ -168,30 +164,39 @@ public class CustomerSys {
 		}
 	}
 	
-	public static boolean addUsedCustomerIDAndWrite(int id) {
+	public static boolean writeUsedCustomerIDs() {
 		File file = new File("src/data/usedidsetCustomers.csv");
 		
-		if (usedIDs.contains(id)) {
-			System.err.println("Attempted to add duplicate customer ID: " + id);
-			return false; 
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		usedIDs.add(id);
-		
-
-		File parentDir = file.getParentFile();
-		if (parentDir != null && !parentDir.exists()) {
-			parentDir.mkdirs();
-		}
-		
-		try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) { 
-			pw.println(id);
+		try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) {
+			for (Integer i: usedIDs)
+				pw.println(i);
+			pw.println();
 			pw.flush();
 			return true;
 		} catch(IOException ex) {
-			System.err.println("Error writing used customer ID to file: " + ex.getMessage());
+			System.err.println("Error writing used customer IDs to file: " + ex.getMessage());
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static String display()
+	{
+		String out="Customer Informations\n";
+		for(Customer c:customers)
+		{
+			out += c.displayInfo();
+		}
+		
+		return out;
 	}
 }

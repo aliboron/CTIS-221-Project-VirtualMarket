@@ -14,20 +14,13 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class VirtualMarketMain{
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		
-		/*
-		 * DOKUNMAYIN BURAYA --- DONT TOUCH
-		 */
 		
 		try {
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-		/*
-		 * BU ARALIĞA DOKUNMAYIN
-		 */
+
         InventorySystem.loadInventoryFromFile();
 		InventorySystem.loadUsedIDs();
 		CustomerSys.loadCustomersFromFile();

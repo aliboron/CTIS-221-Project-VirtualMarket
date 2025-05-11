@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 public class ManageInventoryFrame extends JFrame {
 
@@ -40,7 +41,7 @@ public class ManageInventoryFrame extends JFrame {
 	public ManageInventoryFrame(MarketAdminPanelFrame mapf) {
 		ManageInventoryFrame thisFrame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 700);
+		setBounds(100, 100, 450, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -188,7 +189,7 @@ public class ManageInventoryFrame extends JFrame {
 		panelElectronicItem.add(cbElectronicsBrand);
 		
 		JButton btnAddItem = new JButton("Add Item");
-		btnAddItem.setBounds(10, 497, 89, 23);
+		btnAddItem.setBounds(10, 370, 140, 23);
 		contentPane.add(btnAddItem);
 		
 		JButton btnGoBack = new JButton("<--");
@@ -198,8 +199,12 @@ public class ManageInventoryFrame extends JFrame {
 				dispose();
 			}
 		});
-		btnGoBack.setBounds(6, 627, 89, 23);
+		btnGoBack.setBounds(335, 370, 89, 23);
 		contentPane.add(btnGoBack);
+		
+		JTextArea taFeedback = new JTextArea();
+		taFeedback.setBounds(10, 296, 414, 63);
+		contentPane.add(taFeedback);
 		
 		cbItemType.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

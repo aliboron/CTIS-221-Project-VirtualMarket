@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import virtualMarket.customer.Customer;
+import virtualMarket.customer.CustomerSys;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;

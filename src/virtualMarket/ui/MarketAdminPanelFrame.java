@@ -68,38 +68,32 @@ public class MarketAdminPanelFrame extends JFrame {
 	}
 	
 	public void updateInventoryTable(ArrayList<Item> listItems) {
-	    // Create a table model with the appropriate column names
 	    DefaultTableModel tableModel = new DefaultTableModel() {
 	        @Override
 	        public boolean isCellEditable(int row, int column) {
-	            return false; // Make table read-only
+	            return false;
 	        }
 	    };
 	    
-	    // Add columns
 	    tableModel.addColumn("ID");
 	    tableModel.addColumn("Item Name");
 	    tableModel.addColumn("Stock");
 	    
-	    // Add row data from the listItems
 	    for (Item item : listItems) {
 	        Object[] rowData = new Object[3];
 	        rowData[0] = item.getId();
 	        rowData[1] = item.getName();
-	        rowData[2] = item.getStock(); // Assuming Item has getStock() method
+	        rowData[2] = item.getStock();
 	        
 	        tableModel.addRow(rowData);
 	    }
 	    
-	    // Apply the model to your table
 	    inventoryTable.setModel(tableModel);
 	    
-	    // Optional: Adjust column widths
 	    inventoryTable.getColumnModel().getColumn(0).setPreferredWidth(60);  // ID
 	    inventoryTable.getColumnModel().getColumn(1).setPreferredWidth(200); // Name
 	    inventoryTable.getColumnModel().getColumn(2).setPreferredWidth(60);  // Stock
 	    
-	    // Optional: Sort functionality
 	    inventoryTable.setAutoCreateRowSorter(true);
 	}
 }
