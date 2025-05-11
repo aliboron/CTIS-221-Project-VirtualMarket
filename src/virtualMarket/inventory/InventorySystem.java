@@ -89,7 +89,7 @@ public class InventorySystem {
 	            
 	            // Check if there are enough parts in the line
 	            if (parts.length < 5) {
-	                System.err.println("Invalid line format: " + line);
+	                System.out.println("Invalid line format: " + line);
 	                continue;
 	            }
 	            
@@ -136,7 +136,6 @@ public class InventorySystem {
 	                        System.err.println("Invalid clothing item format: " + line);
 	                        continue;
 	                    }
-	                    // Create ClothingItem
 	                    virtualMarket.enums.ClothingType clothingType = 
 	                        virtualMarket.enums.ClothingType.valueOf(parts[5]);
 	                    virtualMarket.enums.ClothingSize size = 
@@ -151,7 +150,7 @@ public class InventorySystem {
 	                    continue;
 	            }
 	            
-	            // Add the created item to inventory and set the ID
+
 	            if (item != null) {
 	                // Assuming there's a setId method or you can set it in the constructor
 	                item.setId(id);
@@ -211,7 +210,7 @@ public class InventorySystem {
 			}
 			return true;
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.swing.UIManager;
 
+import virtualMarket.customer.CustomerSys;
 import virtualMarket.inventory.InventorySystem;
 import virtualMarket.ui.*;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -29,6 +30,8 @@ public class VirtualMarketMain{
 		 */
         InventorySystem.loadInventoryFromFile();
 		InventorySystem.loadUsedIDs();
+		CustomerSys.loadCustomersFromFile();
+		CustomerSys.loadUsedCustomerIDs();
         VMarketMainFrame VMMwindow = new VMarketMainFrame();
         VMMwindow.setVisible(true);
 	}

@@ -15,17 +15,34 @@ public class Customer {
 		this.address = address;
 	}
 
-	public void placeOrder(Order order) { //Need to implement order
-		
-	};
-
 	public ArrayList<Order> getOrderHistory() { //Waiting for file operations before implemented
 		return null;
 	};
 	
 	
 	public String toFileString() {
-		return String.format(""
+		return String.format("%d,%s,%s,%s\n", id, name, email, address);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+	
+	@Override 
+	public String toString() {
+		return name;
 	}
 
 

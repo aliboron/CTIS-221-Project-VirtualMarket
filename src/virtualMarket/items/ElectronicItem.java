@@ -54,6 +54,10 @@ public class ElectronicItem extends Item {
 	public ElectronicsBrand getBrand() {
 		return brand;
 	}
+	
+	public int getWarrantyPeriod() {
+		return warrantyPeriod;
+	}
 
 
 
@@ -78,14 +82,16 @@ public class ElectronicItem extends Item {
 
 	@Override
 	public String toFileString() {
-		return String.format("%s,%s,%s,%f,%d,%s,%s\n", 
+		return String.format("%s,%s,%s,%f,%d,%d,%s,%s\n", 
 				"elc",
-				getId(),
-				getName(), 
-				getPrice(), 
-				getStock(), 
-				getType().name(), 
-				getBrand().name());
+				id,
+				name, 
+				price, 
+				stock,
+				warrantyPeriod, 
+				type.name(), 
+				brand.name()
+				);
 	}
 
 }

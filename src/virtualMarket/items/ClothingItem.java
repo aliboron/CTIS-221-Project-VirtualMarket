@@ -74,13 +74,13 @@ public class ClothingItem extends Item{
 		public String toFileString() {
 			return String.format("%s,%s,%s,%f,%d,%s,%s,%s\n", 
 					"clo",
-					getId(),
-					getName(), 
-					getPrice(), 
-					getStock(), 
-					getType().name(), 
-					getSize().name(), 
-					getFabric().name());
+					id,
+					name, 
+					price, 
+					stock,
+					type.name(), 
+					size.name(), 
+					fabric.name());
 		}
 		
 		

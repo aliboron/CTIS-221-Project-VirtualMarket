@@ -55,12 +55,12 @@ public class GroceryItem extends Item{
 	public String toFileString() {
 		return String.format("%s,%s,%s,%f,%d,%s,%s\n", 
 				"grc", 
-				getId(),
-				getName(), 
-				getPrice(), 
-				getStock(), 
-				getExpiryDate().toString(), 
-				getGroceryType().name());
+				id,
+				name, 
+				price, 
+				stock,
+				expiryDate.toString(), 
+				type.name());
 	}
     
 }

@@ -5,8 +5,12 @@ import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import virtualMarket.customer.Customer;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -38,6 +42,7 @@ public class CustomerPanelFrame extends JFrame {
     private JScrollPane scrollPane_1;
     private JList listMarketItems;
     private JList listShoppingCart;
+    private JComboBox cbCustomers= new JComboBox();
     
 	/**
 	 * Create the frame.
@@ -122,7 +127,6 @@ public class CustomerPanelFrame extends JFrame {
 		btnCheckout.setBounds(245, 200, 100, 23);
 		ShoppingPanel.add(btnCheckout);
 		
-		JComboBox cbCustomers = new JComboBox();
 		cbCustomers.setBounds(130, 11, 170, 22);
 		contentPanel.add(cbCustomers);
 		
@@ -150,5 +154,11 @@ public class CustomerPanelFrame extends JFrame {
 		}
 		listMarketItems.setEnabled(false);
 		listShoppingCart.setEnabled(false);
+	}
+	
+	
+
+	public JComboBox getCbCustomers() {
+		return cbCustomers;
 	}
 }

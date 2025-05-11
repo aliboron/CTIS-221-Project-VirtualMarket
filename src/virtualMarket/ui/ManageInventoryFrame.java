@@ -24,7 +24,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 
-public class AddItemToInventoryFrame extends JFrame {
+public class ManageInventoryFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -37,8 +37,8 @@ public class AddItemToInventoryFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddItemToInventoryFrame(MarketAdminPanelFrame mapf) {
-		AddItemToInventoryFrame thisFrame = this;
+	public ManageInventoryFrame(MarketAdminPanelFrame mapf) {
+		ManageInventoryFrame thisFrame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();

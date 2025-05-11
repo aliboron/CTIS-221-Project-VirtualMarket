@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import virtualMarket.customer.Customer;
+import virtualMarket.customer.CustomerSys;
 import virtualMarket.inventory.InventorySystem;
 import virtualMarket.items.Item;
 
@@ -37,10 +39,7 @@ public class VMarketMainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private boolean isAdmin = false;
-	
-	private String[] themeSigns = {"☀️", "🌑"};
-	public static boolean isDark = false;
-	
+		
 	CustomerPanelFrame cpf = new CustomerPanelFrame(this);
 	MarketAdminPanelFrame mapf = new MarketAdminPanelFrame(this);
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -53,7 +52,7 @@ public class VMarketMainFrame extends JFrame {
 		
 		VMarketMainFrame thisFrame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 600);
+		setBounds(100, 100, 365, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -62,12 +61,12 @@ public class VMarketMainFrame extends JFrame {
 	
 		
 		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(552, 409, 175, 51);
+		btnLogin.setBounds(79, 384, 175, 51);
 		contentPane.add(btnLogin);
 		
 		JLabel marketIcon = new JLabel("");
 		marketIcon.setIcon(new ImageIcon(VMarketMainFrame.class.getResource("/images/Adsız.png")));
-		marketIcon.setBounds(267, 36, 296, 281);
+		marketIcon.setBounds(27, 11, 296, 281);
 		contentPane.add(marketIcon);
 		
 		JRadioButton rdCustomer = new JRadioButton("Customer");
@@ -78,7 +77,7 @@ public class VMarketMainFrame extends JFrame {
 		});
 		rdCustomer.setSelected(true);
 		buttonGroup.add(rdCustomer);
-		rdCustomer.setBounds(412, 409, 109, 23);
+		rdCustomer.setBounds(214, 321, 109, 23);
 		contentPane.add(rdCustomer);
 		
 		JRadioButton rdMarketAdmin = new JRadioButton("Market Admin");
@@ -88,7 +87,7 @@ public class VMarketMainFrame extends JFrame {
 			}
 		});
 		buttonGroup.add(rdMarketAdmin);
-		rdMarketAdmin.setBounds(412, 437, 109, 23);
+		rdMarketAdmin.setBounds(27, 321, 109, 23);
 		contentPane.add(rdMarketAdmin);
 		
 		
@@ -98,9 +97,11 @@ public class VMarketMainFrame extends JFrame {
 				
 				if (!isAdmin) {
 					fillCustomerFrameItemList();
+					fillCustomerFrameCustomerCB();
 					cpf.setVisible(true);
 					dispose();
 				}else {
+					
 					mapf.setVisible(true);
 					dispose();
 				}
@@ -114,5 +115,11 @@ public class VMarketMainFrame extends JFrame {
 		DefaultListModel<Item> listModel = new DefaultListModel<>();
 		listModel.addAll(InventorySystem.inventory);
 		cpf.getListMarketItems().setModel(listModel);
+	}
+	
+	public void fillCustomerFrameCustomerCB() {
+		DefaultComboBoxModel<Customer> model = new DefaultComboBoxModel();
+		model.addAll(CustomerSys.customers);
+		cpf.getCbCustomers().setModel(model);
 	}
 }
