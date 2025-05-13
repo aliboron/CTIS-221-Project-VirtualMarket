@@ -103,5 +103,10 @@ public class ElectronicItem extends Item {
 				brand.name() // Marka (enum'in adi)
 		);
 	}
+	
+	@Override
+	public String getItemType() {
+		return "Electronic";
+	}
 
 }

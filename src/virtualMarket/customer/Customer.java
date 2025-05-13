@@ -50,6 +50,10 @@ public class Customer {
 	public String displayInfo() {
 		return String.format("ID: %d\nName: %s\nEmail: %s\nAddress: %s\n", id, name, email, address);
 	}
+	
+	public String displayInfoUI() {
+		return String.format(" ID: %d | Name: %s  |  Email: %s  |  Address: %s ", id, name, email, address);
+	}
 
 	public ShoppingCart getShoppingCart() {
 		return shoppingCart;

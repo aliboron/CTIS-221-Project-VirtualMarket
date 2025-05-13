@@ -1,25 +1,25 @@
 package virtualMarket.items;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import virtualMarket.interfaces.DiscountableInterface;
 
-// Tum urunlerin ana (soyut) sinifi
-public abstract class Item implements DiscountableInterface {
 
-    protected String id; // urun id'si, her urun icin benzersiz olmali
-    protected String name; // urun adi
-    protected double price; // urun fiyati
-    protected int stock; // stok miktari
+public abstract class Item implements DiscountableInterface, Comparable<Item>{
 
-    // Kurucu metot (constructor)
+    protected String id;
+    protected String name;
+    protected double price;
+    protected int stock;
+
+
     public Item(String name, double price, int stock) {
         this.name   = name;
         this.price  = price;
         this.stock = stock;
     }
 
-    // Getter metotlari (private degiskenlere erismek icin)
     public String getId() {
 		return id;
 	}
@@ -36,77 +36,101 @@ public abstract class Item implements DiscountableInterface {
 		return stock;
 	}
 	
-	// Setter metotlari (private degiskenleri degistirmek icin)
-	public void setStock(int stock) { // Stok icin setter eklendi
+	public void setStock(int stock) {
 		this.stock = stock;
 	}
 	
-	public void setId(String id) { // ID icin setter
+	public void setId(String id) {
 		this.id = id;
 	}
 	
-	// Her alt sinif (GroceryItem, ElectronicItem vs.) kendi ID olusturma mantigini uygulayacak
-	public abstract String generateID(ArrayList<String> UsedIDs); // Kullanilmis ID'leri alir ki ayni ID uretilmesin
+	public abstract String generateID(ArrayList<String> UsedIDs);
 	
 	
-    @Override // DiscountableInterface'den gelen metot
+    @Override 
 	public double calculateDiscount(double discountPercentage) {
-    	// Indirimli fiyati hesapla ve kuruslari yuvarla
     	return Math.round((price - (price * discountPercentage)) * 100.0) / 100.0;
 	}
 
-	// Bu metot urun satin alindiginda cagrilacak, belki garanti baslatma gibi seyler yapar
+
 	public abstract Item purchaseItem(); 
 	
-	// Sepete eklemek icin urunun bir kopyasini olusturur. Stok genellikle 1 olur bu kopyada.
+
 	public abstract Item createCartCopy(); 
 
-	// Vergili fiyati hesaplar (KDV ekleme gibi)
+
 	public abstract void calculateTaxedPrice();
 	
-	// Urun bilgilerini dosyaya yazilacak formatta string'e cevirir
+
 	public abstract String toFileString();
 
-    // Urunu JList gibi yerlerde gostermek icin kullanilan string temsili
+
     public String toString() {
         return String.format("[%s] %s | %.2f ₺ | stock: %d", id, name, price, stock);
     }
 
-	// Verilen bir ID'nin gecerli bir urun ID'si formatinda olup olmadigini kontrol eder
+    
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, price, stock);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		return Objects.equals(id, other.id) && Objects.equals(name, other.name)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price) && stock == other.stock;
+	}
+	
+	
+	//Comparison based on ItemID
+	@Override
+	public int compareTo(Item o) {
+		return this.id.compareTo(o.getId());
+	}
+
 	public static boolean isValidItemID(String id) {
-		if (id == null || id.length() != 4) { // ID null olamaz ve 4 karakter olmali
+		if (id == null || id.length() != 4) {
 			return false;
 		}
 		
 		try {
-			Integer.parseInt(id); // Tamamen sayilardan mi olusuyor?
+			Integer.parseInt(id);
 		} catch (NumberFormatException e) {
-			return false; // Sayi degilse gecersiz
-		}
-		
-		char firstDigit = id.charAt(0); // Ilk rakam
-		if (firstDigit < '1' || firstDigit > '9') { // Ilk rakam 0 olamaz (1-9 arasi olmali)
 			return false;
 		}
 		
-		return true; // Tum kontrollerden gectiyse gecerli
+		char firstDigit = id.charAt(0);
+		if (firstDigit < '1' || firstDigit > '9') {
+			return false;
+		}
+		
+		return true;
 	}
 
-	// Verilen bir ID'den urun tipini tahmin etmeye calisir (Grocery, Clothing, Electronics)
+	public abstract String getItemType();
+
 	public static String getItemTypeFromID(String id) {
-		if (!isValidItemID(id)) { // Once ID gecerli mi diye bak
-			return "Bilinmiyor"; // Gecersizse "Bilinmiyor"
+		if (!isValidItemID(id)) {
+			return "Unknown"; 
 		}
 		
-		char firstDigit = id.charAt(0); // Ilk rakama gore tip belirle
+		char firstDigit = id.charAt(0);
 		if (firstDigit >= '1' && firstDigit <= '3') {
-			return "Market Ürünü"; // Grocery
+			return "Grocery";
 		} else if (firstDigit >= '4' && firstDigit <= '6') {
-			return "Kıyafet"; // Clothing
+			return "Clothing";
 		} else if (firstDigit >= '7' && firstDigit <= '9') {
-			return "Elektronik"; // Electronics
+			return "Electronic";
 		}
 		
-		return "Bilinmiyor"; // Hicbirine uymuyorsa
+		return "Invalid";
 	}
 }

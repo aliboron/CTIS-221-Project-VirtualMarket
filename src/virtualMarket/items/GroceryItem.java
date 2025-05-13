@@ -80,5 +80,10 @@ public class GroceryItem extends Item{
 				expiryDate.toString(), // Son kullanma tarihi (ISO formatinda)
 				type.name()); // Market urunu tipi (enum'in adi olarak)
 	}
+	
+	@Override
+	public String getItemType() {
+		return "Grocery";
+	}
     
 }

@@ -21,7 +21,7 @@ public class ShoppingCart {
 	};
 
 	// Sepete urun ekleme metodu
-	public void addItem(Item inventoryItem) { // envanterdeki asil urunu alir
+	public void addItem(Item inventoryItem) {
 		if (inventoryItem != null && inventoryItem.getStock() > 0) { // urun var mi ve stokta mi?
 			Item cartItem = items.get(inventoryItem.getId()); // sepette bu urunden var mi diye bak
 			if (cartItem != null) {
@@ -123,7 +123,6 @@ public class ShoppingCart {
 		// Sepetteki urunlerin 'stock' degeri zaten miktarlarini tutuyor.
 		ArrayList<Item> orderItems = new ArrayList<>(items.values());
 
-		// Yeni bir Order nesnesi olustur
 		Order order = new Order(orderId, this.customer, orderItems, LocalDateTime.now());
 		
 		Order.addUsedOrderIDAndWrite(orderId); // Kullanilan siparis ID'sini kaydet

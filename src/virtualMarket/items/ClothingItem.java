@@ -91,5 +91,11 @@ public class ClothingItem extends Item{
 					size.name(), // Beden (enum'in adi)
 					fabric.name()); // Kumas tipi (enum'in adi)
 		}
-		
+
+
+		@Override
+		public String getItemType() {
+			return "Clothing";
+		}
+			
 }
