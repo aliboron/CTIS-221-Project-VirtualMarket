@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,113 +14,157 @@ import javax.swing.table.DefaultTableModel;
 
 import virtualMarket.inventory.InventorySystem;
 import virtualMarket.items.Item;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-// Market admin paneli icin pencere sinifi
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+
 public class MarketAdminPanelFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane; // Ana panel
-	private JTable inventoryTable; // Envanterin gosterilecegi tablo
-	private ManageInventoryFrame aitiFrame; // Urun ekleme/duzenleme penceresi (aitiframe = Add Item To Inventory Frame)
-
+	private JPanel contentPane;
+	private JTable inventoryTable;
+	private ManageInventoryFrame mif;
+	private JTextField tfStock;
+	MarketAdminPanelFrame thisFrame;
 
 	/**
 	 * Pencereyi olusturur.
 	 */
-	public MarketAdminPanelFrame(VMarketMainFrame vmmf) { // Ana pencereyi parametre alir
-		// aitiFrame'i burada initialize edelim ki null olmasin
-		// this referansini constructor icinde kullanmak icin once this'in olusmasi lazim
-		// Bu yuzden aitiFrame'i buton action'inda veya burada null check ile olusturabiliriz.
-		// Simdilik constructor'da birakiyorum ama dikkatli olmak lazim.
-		// En guzeli, aitiFrame'i ilk defa lazim oldugunda olusturmak (lazy initialization).
-		// this.aitiFrame = new ManageInventoryFrame(this); // Bu satir ManageInventoryFrame'e this gonderdigi icin sorun olabilir.
-		// Asagidaki gibi yapalim:
-		if (this.aitiFrame == null) {
-			this.aitiFrame = new ManageInventoryFrame(this);
-		}
+	public MarketAdminPanelFrame(VMarketMainFrame vmmf) {
 
+		thisFrame = this;
+		mif =new ManageInventoryFrame(this);
 
-		MarketAdminPanelFrame frame = this; // ActionListener icinde frame'e ulasmak icin
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Kapatinca program dursun
-		setBounds(100, 100, 900, 600); // Pencere boyutu ve konumu
+		MarketAdminPanelFrame frame = this;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		setBounds(100, 100, 740, 600);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // Kenar bosluklari
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null); // Elle yerlesim
+		contentPane.setLayout(null);
 		
-		JButton btnGoBack = new JButton("<--"); // Geri butonu
+		JButton btnGoBack = new JButton("<--");
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vmmf.setVisible(true); // Ana pencereyi goster
-				dispose(); // Bu pencereyi kapat
+				vmmf.setVisible(true);
+				dispose();
 			}
 		});
 		btnGoBack.setBounds(10, 11, 89, 23);
 		contentPane.add(btnGoBack);
 		
-		JScrollPane scrollPane = new JScrollPane(); // Tablo icin kaydirma cubugu
-		scrollPane.setBounds(10, 45, 350, 505); // Genisligi artirdim biraz
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 45, 452, 505);
 		contentPane.add(scrollPane);
 		
-		inventoryTable = new JTable(); // Envanter tablosu
-		updateInventoryTable(InventorySystem.inventory); // Tabloyu envanterdeki urunlerle doldur
+		inventoryTable = new JTable();
+		updateInventoryTable(InventorySystem.inventory);
 		scrollPane.setViewportView(inventoryTable);
 		
-		JButton btnAddItemtoInventory = new JButton("Add/Edit Item in Inventory"); // İngilizce'ye çevrildi
+		JButton btnAddItemtoInventory = new JButton("Add Item to Inventory");
 		btnAddItemtoInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (aitiFrame == null) { // Eger yukarida olusturulmadiysa burada olustur
-					aitiFrame = new ManageInventoryFrame(frame); // frame (this) referansini veriyoruz
+				if (mif == null) {
+					mif = new ManageInventoryFrame(frame);
 				}
-				aitiFrame.setVisible(true); // Urun ekleme penceresini goster
-				// dispose(); // Bu pencereyi kapatmayalim, urun ekleme penceresi ayri calissin
-				frame.setVisible(false); // Admin panelini gizleyelim, urun ekleme bitince geri donulebilir
+				mif.setVisible(true);
+				dispose();
 			}
 		});
-		btnAddItemtoInventory.setBounds(400, 48, 220, 23); // Buton adina gore genislettim
+		btnAddItemtoInventory.setBounds(472, 45, 220, 23);
 		contentPane.add(btnAddItemtoInventory);
+		
+		JTextArea taFeedback = new JTextArea();
+		taFeedback.setLineWrap(true);
+		taFeedback.setBackground(UIManager.getColor("Label.background"));
+		taFeedback.setEditable(false);
+		taFeedback.setBounds(472, 144, 242, 100);
+		contentPane.add(taFeedback);
+		
+		JButton btnAddStock = new JButton("Add stock");
+		btnAddStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int stockToAdd;
+				try {
+					stockToAdd = Integer.parseInt(tfStock.getText());
+				} catch (NumberFormatException ex) {
+					taFeedback.setForeground(new Color(180,0,0));
+					taFeedback.setText("Please be sure to fill all fields with appropriate content!\nCause: " + ex.getMessage());
+					return;
+				}
+				String itemId;
+				try {
+					itemId = (String) inventoryTable.getModel().getValueAt(inventoryTable.getSelectedRow(), 0);
+				} catch(Exception ex) {
+					taFeedback.setForeground(new Color(180,0,0));
+					taFeedback.setText("Please choose an item from the list! "  + ex.getMessage());
+					return;
+				}
+					
+				Item item = InventorySystem.searchItem(itemId);
+				if (item != null)
+					item.setStock(item.getStock() + stockToAdd);
+				
+				updateInventoryTable(InventorySystem.inventory);
+				taFeedback.setForeground(new Color(0,180,0));
+				taFeedback.setText(item.getName() + "'s stock has been set successfully!");
+			}
+		});
+		btnAddStock.setBounds(472, 110, 220, 23);
+		contentPane.add(btnAddStock);
+		
+		JLabel lblAddStock = new JLabel("Add Stock:");
+		lblAddStock.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblAddStock.setBounds(472, 79, 81, 20);
+		contentPane.add(lblAddStock);
+		
+		tfStock = new JTextField();
+		tfStock.setBounds(556, 79, 136, 20);
+		contentPane.add(tfStock);
+		tfStock.setColumns(10);
+		
+
 		
 	}
 	
-	// Envanter tablosunu gunceller
-	public void updateInventoryTable(ArrayList<Item> listItems) {
-	    // Tablo modeli olustur, hucreler duzenlenemesin
+	public void updateInventoryTable(List<Item> listItems) {
 	    DefaultTableModel tableModel = new DefaultTableModel() {
-			private static final long serialVersionUID = 1L; // warning icin
 			@Override
 	        public boolean isCellEditable(int row, int column) {
-	            return false; // Tablo sadece okunur olsun
+	            return false;
 	        }
 	    };
 	    
-	    // Sutun basliklarini ekle
+
 	    tableModel.addColumn("ID");
-	    tableModel.addColumn("Product Name"); // İngilizce'ye çevrildi
+	    tableModel.addColumn("Product Name"); 
 	    tableModel.addColumn("Stock");
 	    tableModel.addColumn("Price"); 
 	    
-	    // Satir verilerini urun listesinden ekle
-	    if (listItems != null) { // liste null degilse
+	    if (listItems != null) {
 			for (Item item : listItems) {
-				Object[] rowData = new Object[4]; // 4 sutun var artik
+				Object[] rowData = new Object[4];
 				rowData[0] = item.getId();
 				rowData[1] = item.getName();
 				rowData[2] = item.getStock(); 
-				rowData[3] = String.format("%.2f ₺", item.getPrice()); // Fiyati formatli ekle
+				rowData[3] = String.format("%.2f ₺", item.getPrice());
 				
 				tableModel.addRow(rowData);
 			}
 		}
 	    
-	    inventoryTable.setModel(tableModel); // Modeli tabloya uygula
+	    inventoryTable.setModel(tableModel);
 	    
-	    // Istege bagli: Sutun genisliklerini ayarla
-	    inventoryTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
-	    inventoryTable.getColumnModel().getColumn(1).setPreferredWidth(150); // Product Name
-	    inventoryTable.getColumnModel().getColumn(2).setPreferredWidth(40);  // Stock
-		inventoryTable.getColumnModel().getColumn(3).setPreferredWidth(60);  // Price
+	    inventoryTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+	    inventoryTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+	    inventoryTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		inventoryTable.getColumnModel().getColumn(3).setPreferredWidth(60);
 	    
-	    inventoryTable.setAutoCreateRowSorter(true); // Tabloya tiklayinca siralama ozelligi ekle
+	    inventoryTable.setAutoCreateRowSorter(true);
 	}
 }

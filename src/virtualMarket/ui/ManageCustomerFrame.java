@@ -120,8 +120,13 @@ public class ManageCustomerFrame extends JFrame {
 		btnRemove.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-				if(CustomerSys.removeCustomer(Integer.parseInt(textField.getText()))) {
+				int userID;
+				try {userID=Integer.parseInt(textField.getText());}
+				catch (NumberFormatException ex){
+					textArea.setText("Please fill the id field!");
+					return;
+				}
+				if(CustomerSys.removeCustomer(userID)) {
 					JOptionPane.showConfirmDialog(thisFrame, "Removed user!");
 				}else 
 					JOptionPane.showConfirmDialog(thisFrame, "User can not be removed!");
@@ -145,6 +150,8 @@ public class ManageCustomerFrame extends JFrame {
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CustomerSys.writeUsedCustomerIDs();
+				cpf.fillCustomerFrameCustomerCB();
+				cpf.fillCustomerFrameItemList();
 				cpf.setVisible(true);
 				dispose();
 			}

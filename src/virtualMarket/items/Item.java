@@ -3,10 +3,10 @@ package virtualMarket.items;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import virtualMarket.interfaces.DiscountableInterface;
+import virtualMarket.interfaces.*;
 
 
-public abstract class Item implements DiscountableInterface, Comparable<Item>{
+public abstract class Item implements DiscountableInterface, Comparable<Item>, Taxable{
 
     protected String id;
     protected String name;
@@ -57,9 +57,6 @@ public abstract class Item implements DiscountableInterface, Comparable<Item>{
 	
 
 	public abstract Item createCartCopy(); 
-
-
-	public abstract void calculateTaxedPrice();
 	
 
 	public abstract String toFileString();

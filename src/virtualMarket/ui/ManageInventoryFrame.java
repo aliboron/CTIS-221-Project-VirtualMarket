@@ -24,6 +24,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import java.awt.Color;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class ManageInventoryFrame extends JFrame {
 
@@ -195,6 +198,7 @@ public class ManageInventoryFrame extends JFrame {
 		JButton btnGoBack = new JButton("<--");
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				mapf.updateInventoryTable(InventorySystem.inventory);
 				mapf.setVisible(true);
 				dispose();
 			}
@@ -203,6 +207,9 @@ public class ManageInventoryFrame extends JFrame {
 		contentPane.add(btnGoBack);
 		
 		JTextArea taFeedback = new JTextArea();
+		taFeedback.setForeground(new Color(0, 120, 215));
+		taFeedback.setBackground(SystemColor.control);
+		taFeedback.setEditable(false);
 		taFeedback.setBounds(10, 296, 414, 63);
 		contentPane.add(taFeedback);
 		
@@ -241,26 +248,36 @@ public class ManageInventoryFrame extends JFrame {
 				}
 				
 				Item item;
-				if (cbItemType.getSelectedItem() == ItemType.GROCERY) {
-					ZoneId zoneId = ZoneId.systemDefault();
-					LocalDateTime ldt= LocalDateTime.ofInstant(datePicker.getDate().toInstant(), zoneId);
-					
-					item = new GroceryItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), ldt, (GroceryType) cbGroceryType.getSelectedItem());
+				try {
+					if (cbItemType.getSelectedItem() == ItemType.GROCERY) {
+						ZoneId zoneId = ZoneId.systemDefault();
+						LocalDateTime ldt= LocalDateTime.ofInstant(datePicker.getDate().toInstant(), zoneId);
+						
+						item = new GroceryItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), ldt, (GroceryType) cbGroceryType.getSelectedItem());
 
-				} else if (cbItemType.getSelectedItem() == ItemType.CLOTHING) {
-					item = new ClothingItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), (ClothingType) cbClothingType.getSelectedItem(), (ClothingSize) cbClothingSize.getSelectedItem(), (ClothingFabricType) cbClothingFabric.getSelectedItem());
-				} else {
-					item = new ElectronicItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), Integer.parseInt(tfWarrantyPeriod.getText()), (ElectronicsType) cbElectronicsType.getSelectedItem(), (ElectronicsBrand) cbElectronicsBrand.getSelectedItem());
+					} else if (cbItemType.getSelectedItem() == ItemType.CLOTHING) {
+						item = new ClothingItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), (ClothingType) cbClothingType.getSelectedItem(), (ClothingSize) cbClothingSize.getSelectedItem(), (ClothingFabricType) cbClothingFabric.getSelectedItem());
+					} else {
+						item = new ElectronicItem(tfItemName.getText(), Double.parseDouble(tfItemPrice.getText()), Integer.parseInt(tfItemAmount.getText()), Integer.parseInt(tfWarrantyPeriod.getText()), (ElectronicsType) cbElectronicsType.getSelectedItem(), (ElectronicsBrand) cbElectronicsBrand.getSelectedItem());
+					}
+					if (InventorySystem.addUsedIDAndWrite(item.generateID(InventorySystem.usedIds)))
+						JOptionPane.showMessageDialog(thisFrame, "Generated id written to file successfuly!");
+					else
+						JOptionPane.showMessageDialog(thisFrame, "Unsuccessful id operation");
+				} catch(NumberFormatException ex) {
+					taFeedback.setForeground(new Color(255,0,0));
+					taFeedback.setText("Please be sure to fill all fields with appropriate content!\nCause: " + ex.getMessage());
+					return;
 				}
-				if (InventorySystem.addUsedIDAndWrite(item.generateID(InventorySystem.usedIds)))
-					JOptionPane.showMessageDialog(thisFrame, "Generated id written to file successfuly!");
-				else
-					JOptionPane.showMessageDialog(thisFrame, "Unsuccessful id operation");
 				
-				if(InventorySystem.addItem(item))
-					taFeedback.setText("New item added succesfully!\n"+item.toString());
-				else
+				if(InventorySystem.addItem(item)) {
+					taFeedback.setForeground(new Color(0,190,0));
+					taFeedback.setText("New item added succesfully!\n"+item.toString());					
+				}
+				else {					
+					taFeedback.setForeground(new Color(255,0,0));
 					taFeedback.setText("Failed to add new item!");
+				}
 				try {
 					InventorySystem.writeInventoryToFile();
 				} catch (IOException e1) {

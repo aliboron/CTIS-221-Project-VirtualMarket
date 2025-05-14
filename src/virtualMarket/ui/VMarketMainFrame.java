@@ -40,8 +40,8 @@ public class VMarketMainFrame extends JFrame {
 	private JPanel contentPane;
 	private boolean isAdmin = false;
 		
-	CustomerPanelFrame cpf = new CustomerPanelFrame(this);
-	MarketAdminPanelFrame mapf = new MarketAdminPanelFrame(this);
+	CustomerPanelFrame cpf;
+	MarketAdminPanelFrame mapf;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	
@@ -55,6 +55,9 @@ public class VMarketMainFrame extends JFrame {
 		setBounds(100, 100, 365, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		cpf = new CustomerPanelFrame(this);
+		mapf = new MarketAdminPanelFrame(this);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -96,8 +99,8 @@ public class VMarketMainFrame extends JFrame {
 				//JOptionPane.showMessageDialog(thisFrame, "Is admin? : " + isAdmin);
 				
 				if (!isAdmin) {
-					fillCustomerFrameItemList();
-					fillCustomerFrameCustomerCB();
+					cpf.fillCustomerFrameCustomerCB();
+					cpf.fillCustomerFrameItemList();
 					cpf.setVisible(true);
 					dispose();
 				}else {
@@ -111,15 +114,5 @@ public class VMarketMainFrame extends JFrame {
 
 	}
 	
-	public void fillCustomerFrameItemList() {
-		DefaultListModel<Item> listModel = new DefaultListModel<>();
-		listModel.addAll(InventorySystem.inventory);
-		cpf.getListMarketItems().setModel(listModel);
-	}
-	
-	public void fillCustomerFrameCustomerCB() {
-		DefaultComboBoxModel<Customer> model = new DefaultComboBoxModel();
-		model.addAll(CustomerSys.customers);
-		cpf.getCbCustomers().setModel(model);
-	}
+
 }

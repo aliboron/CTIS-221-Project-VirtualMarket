@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -14,11 +15,12 @@ import virtualMarket.items.*;
 
 public class InventorySystem {
 
-	public static ArrayList<Item> inventory = new ArrayList<Item>();
+	public static List<Item> inventory = new ArrayList<Item>();
 	public static ArrayList<String> usedIds = new ArrayList<>();
 
 
 	public static boolean addItem(Item item) {
+		item.calculateTaxedPrice();
 		return inventory.add(item);
 	};
 

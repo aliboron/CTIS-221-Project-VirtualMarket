@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import virtualMarket.comparators.*;
 import virtualMarket.customer.Customer;
+import virtualMarket.customer.CustomerSys;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -42,42 +43,42 @@ public class CustomerPanelFrame extends JFrame {
 	private JPanel contentPanel;
 	private JTextField tfEmail;
 	private JTextField tfPassword;
-	private JButton btnGoBack; // Back button
-	private JPanel ShoppingPanel; // Shopping panel
+	private JButton btnGoBack;
+	private JPanel ShoppingPanel;
 	private JLabel lblCustomerInfo;
-	private JButton btnAddToCart; // Add to cart button
+	private JButton btnAddToCart;
 	
-    private JButton btnReduceItemByOne; // Reduce item by one button
-    private JButton btnRemoveItem; // Remove item completely button
-    private JScrollPane scrollPane_1; // Scroll pane for market list
-    private JList<Item> listMarketItems; // List of market items
-    private JList<Item> listShoppingCart; // List of shopping cart items
-    private JComboBox<Customer> cbCustomers = new JComboBox<>(); // Customer selection combo box
-    private DefaultListModel<Item> shoppingCartListModel; // Model for shopping cart list
+    private JButton btnReduceItemByOne;
+    private JButton btnRemoveItem;
+    private JScrollPane scrollPane_1;
+    private JList<Item> listMarketItems;
+    private JList<Item> listShoppingCart;
+    private JComboBox<Customer> cbCustomers = new JComboBox<>();
+    private DefaultListModel<Item> shoppingCartListModel;
     
     ManageCustomerFrame mcf = new ManageCustomerFrame(this);
 	
-	public CustomerPanelFrame(VMarketMainFrame vmmf) { // Takes the main frame as a parameter
-		CustomerPanelFrame frame = this; // To access the frame within ActionListener
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Stop the program when closed
-		setBounds(100, 100, 900, 550); // Window size and position
+	public CustomerPanelFrame(VMarketMainFrame vmmf) {
+		CustomerPanelFrame frame = this;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 900, 550);
 		contentPanel = new JPanel();
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // Border margins
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPanel);
-		contentPanel.setLayout(null); // No layout manager, manually placing components
+		contentPanel.setLayout(null);
 		
-		btnGoBack = new JButton("<--"); // Back button
+		btnGoBack = new JButton("<--");
 		btnGoBack.setBounds(10, 477, 89, 23);
 		contentPanel.add(btnGoBack);
 		btnGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vmmf.setVisible(true); // Show the main frame
-				dispose(); // Close this frame
+				vmmf.setVisible(true);
+				dispose();
 			}
 		});
 		
-		ShoppingPanel = new JPanel(); // Shopping panel
+		ShoppingPanel = new JPanel();
 		ShoppingPanel.setBounds(0, 80, 884, 361);
 		contentPanel.add(ShoppingPanel);
 		ShoppingPanel.setLayout(null);
@@ -94,12 +95,12 @@ public class CustomerPanelFrame extends JFrame {
 		btnAddToCart.setBounds(386, 85, 110, 23);
 		btnAddToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Item selectedMarketItem = listMarketItems.getSelectedValue(); // Selected item from market
-				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem(); // Selected customer
+				Item selectedMarketItem = listMarketItems.getSelectedValue();
+				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem();
 
-				if (selectedMarketItem != null && selectedCustomer != null) { // Is item and customer selected?
-					if (selectedMarketItem.getStock() > 0) { // Is it in stock?
-						selectedCustomer.getShoppingCart().addItem(selectedMarketItem); // Add to cart
+				if (selectedMarketItem != null && selectedCustomer != null) {
+					if (selectedMarketItem.getStock() > 0) {
+						selectedCustomer.getShoppingCart().addItem(selectedMarketItem);
 						updateShoppingCartList(selectedCustomer); // Update cart list
 						updateMarketItemList(); // Update market list (for stock changes)
 						
@@ -128,8 +129,8 @@ public class CustomerPanelFrame extends JFrame {
 		scrollPane.setBounds(529, 80, 320, 270);
 		ShoppingPanel.add(scrollPane);
 		
-		shoppingCartListModel = new DefaultListModel<>(); // Initialize model
-		listShoppingCart = new JList<>(shoppingCartListModel); // Use model
+		shoppingCartListModel = new DefaultListModel<>(); 
+		listShoppingCart = new JList<>(shoppingCartListModel);
 		scrollPane.setViewportView(listShoppingCart);
 		
 		btnReduceItemByOne = new JButton("Reduce");
@@ -140,9 +141,9 @@ public class CustomerPanelFrame extends JFrame {
 				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem();
 
 				if (selectedCartItem != null && selectedCustomer != null) {
-					boolean success = selectedCustomer.getShoppingCart().reduceItemByOne(selectedCartItem.getId()); // Reduce by one
+					boolean success = selectedCustomer.getShoppingCart().reduceItemByOne(selectedCartItem.getId());
 					if (success) {
-						updateShoppingCartList(selectedCustomer); // Update cart
+						updateShoppingCartList(selectedCustomer);
 						updateMarketItemList(); // Update market
 						try {
 							InventorySystem.writeInventoryToFile(); // Save inventory
@@ -192,7 +193,7 @@ public class CustomerPanelFrame extends JFrame {
 		scrollPane_1.setBounds(33, 80, 320, 270);
 		ShoppingPanel.add(scrollPane_1);
 		
-		listMarketItems = new JList<>(); // Initialize with default model or set later
+		listMarketItems = new JList<>();
 		scrollPane_1.setViewportView(listMarketItems);
 		
 		JButton btnCheckout = new JButton("Checkout");
@@ -201,28 +202,28 @@ public class CustomerPanelFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem();
 				if (selectedCustomer == null) {
-					JOptionPane.showMessageDialog(frame, "Please select a customer first.", "Customer Not Selected", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Please select a customer first.");
 					return;
 				}
 
-				if (selectedCustomer.getShoppingCart().getItems().isEmpty()) { // Is cart empty?
-					JOptionPane.showMessageDialog(frame, "Your shopping cart is empty.", "Empty Cart", JOptionPane.INFORMATION_MESSAGE);
+				if (selectedCustomer.getShoppingCart().getItems().isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "Your shopping cart is empty.");
 					return;
 				}
 
-				Order order = selectedCustomer.getShoppingCart().checkOut(); // Checkout
+				Order order = selectedCustomer.getShoppingCart().checkOut();
 
 				if (order != null) { // Was order created?
-					boolean writeSuccess = Order.writeOrderToFile(order); // Write order to file
+					boolean writeSuccess = Order.writeOrderToFile(order); 
 					if (writeSuccess) {
-						JOptionPane.showMessageDialog(frame, "Checkout successful! Order ID: " + order.getId() + "\nOrder details saved.", "Checkout Complete", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Checkout successful! Order ID: " + order.getId() + "\nOrder details saved.");
 					} else {
-						JOptionPane.showMessageDialog(frame, "Checkout successful but order details could not be saved to file. Order ID: " + order.getId(), "File Write Error", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Checkout successful but order details could not be saved to file. Order ID: " + order.getId());
 					}
-					updateShoppingCartList(selectedCustomer); // Update cart list (will be emptied)
-					updateMarketItemList(); // Update market list
+					updateShoppingCartList(selectedCustomer);
+					updateMarketItemList();
 				} else {
-					JOptionPane.showMessageDialog(frame, "Checkout failed. Cart might be empty or an error occurred.", "Checkout Failed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Checkout failed. Cart might be empty or an error occurred.");
 				}
 			}
 		});
@@ -248,7 +249,7 @@ public class CustomerPanelFrame extends JFrame {
 				listMarketItems.setModel(marketModel);
 			}
 		});
-		btnSortByID.setBounds(386, 252, 110, 23);
+		btnSortByID.setBounds(381, 252, 120, 23);
 		ShoppingPanel.add(btnSortByID);
 		
 		JButton btnSortByName = new JButton("Sort by Name");
@@ -261,7 +262,7 @@ public class CustomerPanelFrame extends JFrame {
 				listMarketItems.setModel(marketModel);
 			}
 		});
-		btnSortByName.setBounds(386, 286, 110, 23);
+		btnSortByName.setBounds(381, 286, 120, 23);
 		ShoppingPanel.add(btnSortByName);
 		
 		JButton btnSortByType = new JButton("Sort By Type");
@@ -274,7 +275,7 @@ public class CustomerPanelFrame extends JFrame {
 				listMarketItems.setModel(marketModel);
 			}
 		});
-		btnSortByType.setBounds(386, 320, 110, 23);
+		btnSortByType.setBounds(381, 320, 120, 23);
 		ShoppingPanel.add(btnSortByType);
 		
 		cbCustomers.setBounds(130, 11, 170, 22);
@@ -300,16 +301,16 @@ public class CustomerPanelFrame extends JFrame {
 		
 		btnSelectCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem(); // Get selected customer
+				Customer selectedCustomer = (Customer) cbCustomers.getSelectedItem(); 
 				if (selectedCustomer != null) {
 					lblCustomerInfo.setText("Customer Info: " + selectedCustomer.displayInfoUI());
-					updateShoppingCartList(selectedCustomer); // Show customer's cart
-					enableShoppingPanel(); // Enable shopping panel
+					updateShoppingCartList(selectedCustomer);
+					enableShoppingPanel();
 				}
 			}
 		});
 		
-		disableShoppingPanel(); // Initially disable shopping panel
+		disableShoppingPanel();
 		
 	}
 	public JList<Item> getListMarketItems() {
@@ -362,5 +363,17 @@ public class CustomerPanelFrame extends JFrame {
 
 	public JComboBox<Customer> getCbCustomers() {
 		return cbCustomers;
+	}
+	
+	public void fillCustomerFrameItemList() {
+		DefaultListModel<Item> listModel = new DefaultListModel<>();
+		listModel.addAll(InventorySystem.inventory);
+		getListMarketItems().setModel(listModel);
+	}
+	
+	public void fillCustomerFrameCustomerCB() {
+		DefaultComboBoxModel<Customer> model = new DefaultComboBoxModel();
+		model.addAll(CustomerSys.customers);
+		getCbCustomers().setModel(model);
 	}
 }

@@ -6,7 +6,7 @@ import virtualMarket.order.*;
 public class Customer {
 	private int id;
 	private String name, email, address;
-	private ShoppingCart shoppingCart = new ShoppingCart(this);; // her musterinin bir alisveris sepeti var
+	private ShoppingCart shoppingCart = new ShoppingCart(this);
 
 	public Customer(int id, String name, String email, String address) {
 		super();
@@ -15,11 +15,6 @@ public class Customer {
 		this.email = email;
 		this.address = address;
 	}
-
-	public ArrayList<Order> getOrderHistory() { 
-		System.out.println("getOrderHistory method is not fully implemented yet.");
-		return null; // Simdilik null donduruyor
-	};
 	
 	
 	public String toFileString() {
